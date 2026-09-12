@@ -1,6 +1,7 @@
 package br.com.orderpatterns.service;
 
 import br.com.orderpatterns.domain.Product;
+import br.com.orderpatterns.exception.ResourceNotFoundException;
 import br.com.orderpatterns.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class ProductService {
 
     public Product findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado: " + id));
     }
 
     public Product create(Product product) {

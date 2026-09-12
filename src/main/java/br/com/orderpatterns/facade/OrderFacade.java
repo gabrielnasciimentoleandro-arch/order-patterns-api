@@ -1,6 +1,7 @@
 package br.com.orderpatterns.facade;
 
 import br.com.orderpatterns.domain.Product;
+import br.com.orderpatterns.exception.ResourceNotFoundException;
 import br.com.orderpatterns.repository.ProductRepository;
 import br.com.orderpatterns.strategy.DiscountStrategy;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class OrderFacade {
 
         for (OrderDtos.Item item : request.items()) {
             Product product = productRepository.findById(item.productId())
-                    .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado: " + item.productId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado: " + item.productId()));
             product.reduceStock(item.quantity());
             subtotal = subtotal.add(product.getPrice().multiply(BigDecimal.valueOf(item.quantity())));
         }
